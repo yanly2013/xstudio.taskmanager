@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"   
+      android:id="@+id/ScrollView" 
+      android:layout_width="match_parent"   
+      android:layout_height="wrap_content"
+ >  
+      
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+
+  <LinearLayout 
+      android:id="@+id/linear1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+ <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine" >
+    </EditText>
+
+   <RadioGroup
+       android:id="@+id/radioGroup1"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content" >
+
+       <RadioButton
+           android:id="@+id/radio0"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:checked="true"
+           android:text="重要且紧急" />
+
+       <RadioButton
+           android:id="@+id/radio1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="重要非紧急" />
+
+       <RadioButton
+           android:id="@+id/radio2"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="不重要但紧急" />
+       
+       <RadioButton
+           android:id="@+id/radio3"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="不重要非紧急" />
+   </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="置顶" />
+    <CheckBox 
+        android:id="@+id/checkbox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="完成期限"
+        />
+   <DatePicker
+        android:id="@+id/datePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />      
+      
+</LinearLayout>
+    
+
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_below="@+id/linear1" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="放弃" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_below="@+id/linear1" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="确认" />
+  
+</RelativeLayout>
+</ScrollView>
