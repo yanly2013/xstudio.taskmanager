@@ -7,7 +7,6 @@ import org.apache.http.util.EncodingUtils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.view.View.OnClickListener;/* 导入的头文件需要有view类监听*/
@@ -26,10 +24,7 @@ public class AddTaskActivity extends Activity {
 	private Button btnAbort;
 	private EditText contenttext;
 	private RadioGroup priorityradio;
-	private RadioButton radiobtn0;
-	private RadioButton radiobtn1;
-	private RadioButton radiobtn2;
-	private RadioButton radiobtn3;
+
 
 	private CheckBox ontopbox;
 	private CheckBox hasdeadlinebox;
@@ -46,39 +41,32 @@ public class AddTaskActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addtaskactivity);
-
+		
 		Intent intent = this.getIntent();// 得到用于激活它的意图
 		position = intent.getIntExtra("selectpos", 0);
 		Toast.makeText(this, "你选择了" + position + "", Toast.LENGTH_SHORT).show();
-
-		DBManage database = new DBManage(this);// 这段代码放到Activity类中才用this
-
-		db = database.getWritableDatabase();
+		
 		btnConfirm = (Button) findViewById(R.id.button2);
 		btnAbort = (Button) findViewById(R.id.button1);
 		contenttext = (EditText) findViewById(R.id.editText1);
 		priorityradio = (RadioGroup) findViewById(R.id.radioGroup1);
-		radiobtn0 = (RadioButton) findViewById(R.id.radio0);
-		radiobtn1 = (RadioButton) findViewById(R.id.radio1);
-		radiobtn2 = (RadioButton) findViewById(R.id.radio2);
-		radiobtn3 = (RadioButton) findViewById(R.id.radio3);
 		ontopbox = (CheckBox) findViewById(R.id.checkBox1);
 		hasdeadlinebox = (CheckBox) findViewById(R.id.checkbox2);
 		deadline = (DatePicker) findViewById(R.id.datePicker1);
-		/*if (position != 0) {
-			Cursor c = db.rawQuery("select * from task where taskid =?",
-					new String[] { "position" });
 
-			if (c.moveToFirst()) {
+		DBManage database = new DBManage(this);// 这段代码放到Activity类中才用this
 
-				editquery = c.getString(c.getColumnIndex("content"));
-				contenttext.setText(editquery);
-			}
-		}
-*/
-		// Toast.makeText(AddTaskActivity.this, stredit, 1).show();
-
-
+		db = database.getWritableDatabase();
+	
+		/*try {
+			String writestr = 1+"";
+			FileOutputStream fout = openFileOutput("taskid.txt", MODE_PRIVATE);
+			byte[] bytes = writestr.getBytes();
+			fout.write(bytes);
+			fout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
 		String res = "";
 		try {
 			FileInputStream fin = openFileInput("taskid.txt");
@@ -102,8 +90,6 @@ public class AddTaskActivity extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -149,7 +135,7 @@ public class AddTaskActivity extends Activity {
 				db.close();
 				startActivity(it);
 			}
-		});
+		});		
 		//
 		btnAbort.setOnClickListener(new OnClickListener() {
 
@@ -161,7 +147,8 @@ public class AddTaskActivity extends Activity {
 				db.close();
 			}
 		});
-
-	}
 	
+	}
+
+
 }
