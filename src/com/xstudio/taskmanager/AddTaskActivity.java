@@ -6,7 +6,9 @@ import java.io.FileOutputStream;
 import org.apache.http.util.EncodingUtils;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -25,7 +27,6 @@ public class AddTaskActivity extends Activity {
 	private EditText contenttext;
 	private RadioGroup priorityradio;
 
-
 	private CheckBox ontopbox;
 	private CheckBox hasdeadlinebox;
 	private DatePicker deadline;
@@ -41,11 +42,11 @@ public class AddTaskActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addtaskactivity);
-		
+
 		Intent intent = this.getIntent();// 得到用于激活它的意图
 		position = intent.getIntExtra("selectpos", 0);
 		Toast.makeText(this, "你选择了" + position + "", Toast.LENGTH_SHORT).show();
-		
+
 		btnConfirm = (Button) findViewById(R.id.button2);
 		btnAbort = (Button) findViewById(R.id.button1);
 		contenttext = (EditText) findViewById(R.id.editText1);
@@ -57,16 +58,57 @@ public class AddTaskActivity extends Activity {
 		DBManage database = new DBManage(this);// 这段代码放到Activity类中才用this
 
 		db = database.getWritableDatabase();
-	
-		/*try {
-			String writestr = 1+"";
-			FileOutputStream fout = openFileOutput("taskid.txt", MODE_PRIVATE);
-			byte[] bytes = writestr.getBytes();
-			fout.write(bytes);
-			fout.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
+		// ///////////////////////////
+		if (position != 0) {
+			setTitle("点击第" + position + "个项目");
+			Cursor c = db.rawQuery("select * from task where taskid = ?",
+					new String[] { position + "" });
+			if (c.moveToFirst()) {
+
+				editquery = c.getString(c.getColumnIndex("content"));
+				contenttext.setText(editquery);
+
+				String prio = c.getString(c.getColumnIndex("priority"));
+				priorityradio.check(Integer.valueOf(prio).intValue()); 
+				
+				String istop = c.getString(c.getColumnIndex("istop"));
+				if (istop.equals("true"))
+				{
+					ontopbox.setChecked(true);
+				}
+				else
+				{
+					ontopbox.setChecked(false);
+				}
+				
+
+				String isdealine = c.getString(c.getColumnIndex("isdeadline"));
+				if (isdealine.equals("true"))
+				{
+					hasdeadlinebox.setChecked(true);
+				}
+				else
+				{
+					hasdeadlinebox.setChecked(false);
+				}
+				
+				String date = c.getString(c.getColumnIndex("deadline"));
+				
+				
+
+String temp = "null";
+			}
+
+		}
+
+		// ///////////////////
+
+		/*
+		 * try { String writestr = 1+""; FileOutputStream fout =
+		 * openFileOutput("taskid.txt", MODE_PRIVATE); byte[] bytes =
+		 * writestr.getBytes(); fout.write(bytes); fout.close(); } catch
+		 * (Exception e) { e.printStackTrace(); }
+		 */
 		String res = "";
 		try {
 			FileInputStream fin = openFileInput("taskid.txt");
@@ -78,11 +120,11 @@ public class AddTaskActivity extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		taskno=Integer.parseInt(res);
-        taskno++;
-        
+		taskno = Integer.parseInt(res);
+		taskno++;
+
 		try {
-			String writestr = taskno+"";
+			String writestr = taskno + "";
 			FileOutputStream fout = openFileOutput("taskid.txt", MODE_PRIVATE);
 			byte[] bytes = writestr.getBytes();
 			fout.write(bytes);
@@ -124,18 +166,21 @@ public class AddTaskActivity extends Activity {
 							+ "', '"
 							+ time + "')";
 				} else {
+				     ContentValues cv = new ContentValues();  
+                     cv.put("content", stredit); 
+                     cv.put("istop",  String.valueOf(isontop));
+                     cv.put("isdeadline",String.valueOf(isdealine));
+                     db.update("task", cv, "taskid = ?", new String[] { position + "" });  
+					
 
-					sql = "update task set content ='" + stredit
-							+ "', priority = " + radioidx + " where taskid = "
-							+ position + "";
 				}
-				db.execSQL(sql);// 执行SQL语句b
+				//db.execSQL(sql);// 执行SQL语句b
 				Toast.makeText(AddTaskActivity.this, "响应成功", Toast.LENGTH_SHORT)
 						.show();
 				db.close();
 				startActivity(it);
 			}
-		});		
+		});
 		//
 		btnAbort.setOnClickListener(new OnClickListener() {
 
@@ -147,8 +192,7 @@ public class AddTaskActivity extends Activity {
 				db.close();
 			}
 		});
-	
-	}
 
+	}
 
 }

@@ -1,19 +1,31 @@
 package com.xstudio.taskmanager;
 
 import android.app.Activity;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import android.widget.Toast;
+import android.view.View;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnCreateContextMenuListener;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.AdapterView.OnItemClickListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListTaskActivity extends Activity {
-	private ListView listView;
+	public ListView listView;
 
 	// private List<String> data = new ArrayList<String>();
 	// private String[] strs = {"1","2","3"};
@@ -50,17 +62,21 @@ public class ListTaskActivity extends Activity {
 		listView.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_expandable_list_item_1, strs));
 
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			
+			
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id
+					) {
+				setTitle("点击第" + position + "个项目");
+				Intent it = new Intent();
+				it.putExtra("selectpos", taskid[position]);
+				it.setClass(ListTaskActivity.this, AddTaskActivity.class);
+				startActivity(it);
+			}
+
+		});
+
 		setContentView(listView);
-
-	}
-
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Toast.makeText(this, "你选择了" + position + "", Toast.LENGTH_SHORT).show();
-
-		Intent it = new Intent();
-		it.putExtra("selectpos", taskid[position]);
-		it.setClass(ListTaskActivity.this, AddTaskActivity.class);
-		startActivity(it);
 
 	}
 
