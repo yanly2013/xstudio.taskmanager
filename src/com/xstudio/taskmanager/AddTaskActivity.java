@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -29,13 +31,13 @@ public class AddTaskActivity extends Activity {
 
 	private CheckBox ontopbox;
 	private CheckBox hasdeadlinebox;
-	private DatePicker deadline;
+	private DatePicker deadlines;
 
 	SQLiteDatabase db = null;
 	public String stredit;
 	private int radioidx = 0;
 	private static int taskno = 10;
-	private int position = 0;
+	private int position = 65535;
 	String editquery;
 
 	@Override
@@ -53,13 +55,13 @@ public class AddTaskActivity extends Activity {
 		priorityradio = (RadioGroup) findViewById(R.id.radioGroup1);
 		ontopbox = (CheckBox) findViewById(R.id.checkBox1);
 		hasdeadlinebox = (CheckBox) findViewById(R.id.checkbox2);
-		deadline = (DatePicker) findViewById(R.id.datePicker1);
+		deadlines = (DatePicker) findViewById(R.id.datePicker1);
 
 		DBManage database = new DBManage(this);// 这段代码放到Activity类中才用this
 
 		db = database.getWritableDatabase();
 		// ///////////////////////////
-		if (position != 0) {
+		if (position != 65535) {
 			setTitle("点击第" + position + "个项目");
 			Cursor c = db.rawQuery("select * from task where taskid = ?",
 					new String[] { position + "" });
@@ -93,7 +95,10 @@ public class AddTaskActivity extends Activity {
 				}
 				
 				String date = c.getString(c.getColumnIndex("deadline"));
-				
+
+				 String strdate[] = date.split("-");
+
+				deadlines.updateDate(Integer.valueOf(strdate[0]).intValue(), Integer.valueOf(strdate[1]).intValue(),  Integer.valueOf(strdate[2]).intValue());
 				
 
 String temp = "null";
@@ -143,15 +148,15 @@ String temp = "null";
 				boolean isdealine = hasdeadlinebox.isChecked();
 				String time = "2099-12-12";
 				if (isdealine) {
-					time = deadline.getYear() + "-" + deadline.getMonth() + "-"
-							+ deadline.getDayOfMonth();
+					time = deadlines.getYear() + "-" + deadlines.getMonth() + "-"
+							+ deadlines.getDayOfMonth();
 				}
 
 				Intent it = new Intent();
 				it.setClass(AddTaskActivity.this, ListTaskActivity.class);
 
 				String sql;
-				if (position == 0) {
+				if (position == 65535) {
 
 					sql = "insert into task(taskid,content,priority,istop,isdeadline,deadline) values ("
 							+ taskno
@@ -165,16 +170,19 @@ String temp = "null";
 							+ isdealine
 							+ "', '"
 							+ time + "')";
+					db.execSQL(sql);// 执行SQL语句b
 				} else {
 				     ContentValues cv = new ContentValues();  
                      cv.put("content", stredit); 
+                     cv.put("priority", String.valueOf(radioidx));
                      cv.put("istop",  String.valueOf(isontop));
                      cv.put("isdeadline",String.valueOf(isdealine));
+                     //cv.put("dealine", time);
                      db.update("task", cv, "taskid = ?", new String[] { position + "" });  
 					
 
 				}
-				//db.execSQL(sql);// 执行SQL语句b
+
 				Toast.makeText(AddTaskActivity.this, "响应成功", Toast.LENGTH_SHORT)
 						.show();
 				db.close();
@@ -190,6 +198,23 @@ String temp = "null";
 				it.setClass(AddTaskActivity.this, ListTaskActivity.class);
 				startActivity(it);
 				db.close();
+			}
+		});
+		
+		hasdeadlinebox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO Auto-generated method stub
+				if (isChecked == false)
+				{
+					setTitle("置灰");
+					deadlines.setEnabled(false);
+				}
+				else
+				{
+					setTitle("不置灰");
+					deadlines.setEnabled(true);					
+				}
 			}
 		});
 
