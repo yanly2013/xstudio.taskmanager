@@ -13,15 +13,15 @@
             android:label="@string/app_name"
             android:name=".AddTaskActivity" 
             android:theme = "@style/test">
- 
+  
         </activity>
        <activity android:name=".ListTaskActivity"
            android:theme = "@style/test">
-               <intent-filter >
+                  <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>       
+            </intent-filter>   
            
            
        </activity>

@@ -30,7 +30,7 @@ import java.util.HashMap;
 
 public class ListTaskActivity extends Activity {
 	public ListView listView;
-
+	public DBManage database;
 	private SQLiteDatabase db = null;
 	private String[] strs;
 	//private String[] strs = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"};
@@ -43,11 +43,14 @@ public class ListTaskActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);   
-	
+		database = new DBManage(this);
 
-		DBManage database = new DBManage(this);// 这段代码放到Activity类中才用this
+		database.openDatabase();
+		database.closeDatabase();
 
-		db = database.getWritableDatabase();
+		//DBManage database = new DBManage(this);// 这段代码放到Activity类中才用this
+		db = SQLiteDatabase.openOrCreateDatabase(DBManage.DB_PATH + "/" + DBManage.DB_NAME, null);
+		//db = database.getWritableDatabase();
 
 		Cursor c = db.query("task", null, null, null, null, null, null);// 查询并获得游标
         strs = new String[c.getCount()];
@@ -64,7 +67,7 @@ public class ListTaskActivity extends Activity {
 		}
 
 		listView = new ListView(this);
-
+		listView.setBackgroundColor(88323232);
 		listView.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_expandable_list_item_1, strs));
 
@@ -127,7 +130,7 @@ public class ListTaskActivity extends Activity {
                 // 删除操作 
         	int selectedtaskid = taskid[pos];
         	db.delete("task", "taskid = ?", new String[]{String.valueOf(selectedtaskid)});  
-            //db.close();
+            db.close();
         	startActivity(new Intent(ListTaskActivity.this,ListTaskActivity.class));
         	break; 
 

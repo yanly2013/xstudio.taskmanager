@@ -3,5 +3,8 @@
 
     <string name="app_name">Taskmanager</string>
     <string name="hello">Hello World, AddTaskActivity!</string>
-
+    <drawable name="bkcolor">#00ffffff</drawable>
+    <drawable name="darkgray">#808080FF</drawable>
+    <drawable name="white">#FFEEEEEE</drawable>
+     <drawable name="black">#FF000000</drawable>
 </resources>
