@@ -6,17 +6,23 @@
     android:orientation="vertical" 
 >
 
-
+    <ImageButton 
+android:id="@+id/backimagebtn" 
+android:layout_width="wrap_content" 
+android:layout_height="wrap_content" 
+android:src="@drawable/ic_launcher" 
+android:layout_alignParentLeft="true"
+/> 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="我的任务"
+        android:text="添加任务"
         android:textSize="18sp"
         android:textColor="#FFFFFF00"
         android:layout_centerInParent="true" />
     <ImageButton 
-android:id="@+id/addtaskimagebtn" 
+android:id="@+id/confirmimagebtn" 
 android:layout_width="wrap_content" 
 android:layout_height="wrap_content" 
 android:src="@drawable/ic_launcher" 

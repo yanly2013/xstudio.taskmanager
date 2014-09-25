@@ -14,26 +14,29 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.view.View.OnClickListener;/* 导入的头文件需要有view类监听*/
 
 public class AddTaskActivity extends Activity {
 	/** Called when the activity is first created. */
-	private Button btnConfirm;
-	private Button btnAbort;
+
 	private EditText contenttext;
 	private RadioGroup priorityradio;
 
 	private CheckBox ontopbox;
 	private CheckBox hasdeadlinebox;
 	private DatePicker deadlines;
+	private ImageButton backImgbtn;
+	private ImageButton confirmImgbtn;
 
 	SQLiteDatabase db = null;
 	public String stredit;
@@ -45,19 +48,25 @@ public class AddTaskActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);   
 		setContentView(R.layout.addtaskactivity);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.addtasktitlebar);  //titlebar为自己标题栏的布局
+		
 
+		
 		Intent intent = this.getIntent();// 得到用于激活它的意图
 		position = intent.getIntExtra("selectpos", 0);
 		Toast.makeText(this, "你选择了" + position + "", Toast.LENGTH_SHORT).show();
 
-		btnConfirm = (Button) findViewById(R.id.button2);
-		btnAbort = (Button) findViewById(R.id.button1);
+
 		contenttext = (EditText) findViewById(R.id.editText1);
 		priorityradio = (RadioGroup) findViewById(R.id.radioGroup1);
 		ontopbox = (CheckBox) findViewById(R.id.checkBox1);
 		hasdeadlinebox = (CheckBox) findViewById(R.id.checkbox2);
 		deadlines = (DatePicker) findViewById(R.id.datePicker1);
+		backImgbtn = (ImageButton)findViewById(R.id.backimagebtn);
+		confirmImgbtn = (ImageButton)findViewById(R.id.confirmimagebtn);
 		// int b =  getResources().getColor(R.drawable.darkgray);//得到配置文件里的颜色
 		// ontopbox.setTextColor(b);
 
@@ -158,7 +167,7 @@ public class AddTaskActivity extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		btnConfirm.setOnClickListener(new OnClickListener() {
+		confirmImgbtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -211,7 +220,7 @@ public class AddTaskActivity extends Activity {
 			}
 		});
 		//
-		btnAbort.setOnClickListener(new OnClickListener() {
+		backImgbtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub

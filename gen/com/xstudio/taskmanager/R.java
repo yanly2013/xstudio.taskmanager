@@ -19,11 +19,11 @@ public final class R {
     }
     public static final class id {
         public static final int ScrollView=0x7f070000;
-        public static final int back=0x7f07000d;
-        public static final int button1=0x7f07000b;
-        public static final int button2=0x7f07000c;
+        public static final int addtaskimagebtn=0x7f07000d;
+        public static final int backimagebtn=0x7f07000b;
         public static final int checkBox1=0x7f070008;
         public static final int checkbox2=0x7f070009;
+        public static final int confirmimagebtn=0x7f07000c;
         public static final int datePicker1=0x7f07000a;
         public static final int editText1=0x7f070002;
         public static final int linear1=0x7f070001;
@@ -35,8 +35,9 @@ public final class R {
     }
     public static final class layout {
         public static final int addtaskactivity=0x7f030000;
-        public static final int listtasktitlebar=0x7f030001;
-        public static final int main=0x7f030002;
+        public static final int addtasktitlebar=0x7f030001;
+        public static final int listtasktitlebar=0x7f030002;
+        public static final int main=0x7f030003;
     }
     public static final class raw {
         public static final int mytask=0x7f040000;

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.view.View;
@@ -35,7 +37,7 @@ public class ListTaskActivity extends Activity {
 	private String[] strs;
 	//private String[] strs = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"};
 	private int[] taskid = new int[100];
-	private Button addtaskbtn;
+	private ImageButton addtaskimgbtn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -102,8 +104,8 @@ public class ListTaskActivity extends Activity {
 		setContentView(listView);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.listtasktitlebar);  //titlebar为自己标题栏的布局
 
-		addtaskbtn = (Button)findViewById(R.id.back);
-		addtaskbtn.setOnClickListener(new OnClickListener() {
+		addtaskimgbtn = (ImageButton)findViewById(R.id.addtaskimagebtn);
+		addtaskimgbtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
