@@ -15,7 +15,7 @@
             android:theme = "@style/test">
   
         </activity>
-       <activity android:name=".ListTaskActivity"
+       <activity android:name=".ListComplicateTaskActivity"
            android:theme = "@style/test">
                   <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
