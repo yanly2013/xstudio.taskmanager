@@ -7,4 +7,11 @@
     <drawable name="darkgray">#808080FF</drawable>
     <drawable name="white">#FFEEEEEE</drawable>
      <drawable name="black">#FF000000</drawable>
+
+    <array name="ItemArray">
+         <item>删除</item>
+         <item>置顶</item>
+         <item>修改</item>
+     </array>
+
 </resources>

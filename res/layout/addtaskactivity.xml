@@ -15,8 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        >
-    </EditText>
+        android:gravity="left|top"
+        android:minLines="4"
+        android:hint="请输入你的任务" />
 
    <RadioGroup
        android:id="@+id/radioGroup1"
@@ -65,6 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="完成期限"
+        android:checked="true"
          android:textColor="@drawable/black"
          />
    <DatePicker

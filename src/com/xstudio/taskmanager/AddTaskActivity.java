@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.util.EncodingUtils;
 
@@ -44,30 +47,30 @@ public class AddTaskActivity extends Activity {
 	private static int taskno = 10;
 	private int position = 65535;
 	String editquery;
+	private String updatedate;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);   
-		setContentView(R.layout.addtaskactivity);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.addtasktitlebar);  //titlebar为自己标题栏的布局
-		
 
-		
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		setContentView(R.layout.addtaskactivity);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+				R.layout.addtasktitlebar); // titlebar为自己标题栏的布局
+
 		Intent intent = this.getIntent();// 得到用于激活它的意图
 		position = intent.getIntExtra("selectpos", 0);
 		Toast.makeText(this, "你选择了" + position + "", Toast.LENGTH_SHORT).show();
-
 
 		contenttext = (EditText) findViewById(R.id.editText1);
 		priorityradio = (RadioGroup) findViewById(R.id.radioGroup1);
 		ontopbox = (CheckBox) findViewById(R.id.checkBox1);
 		hasdeadlinebox = (CheckBox) findViewById(R.id.checkbox2);
 		deadlines = (DatePicker) findViewById(R.id.datePicker1);
-		backImgbtn = (ImageButton)findViewById(R.id.backimagebtn);
-		confirmImgbtn = (ImageButton)findViewById(R.id.confirmimagebtn);
-		// int b =  getResources().getColor(R.drawable.darkgray);//得到配置文件里的颜色
+		backImgbtn = (ImageButton) findViewById(R.id.backimagebtn);
+		confirmImgbtn = (ImageButton) findViewById(R.id.confirmimagebtn);
+		// int b = getResources().getColor(R.drawable.darkgray);//得到配置文件里的颜色
 		// ontopbox.setTextColor(b);
 
 		// database = new DBManage(this);
@@ -77,6 +80,8 @@ public class AddTaskActivity extends Activity {
 				+ DBManage.DB_NAME, null);
 
 		// DBManage database = new DBManage(this);// 这段代码放到Activity类中才用this
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");    
+		updatedate=sdf.format(new java.util.Date()); 
 
 		// db = database.getWritableDatabase();
 		// ///////////////////////////
@@ -127,7 +132,8 @@ public class AddTaskActivity extends Activity {
 		 * writestr.getBytes(); fout.write(bytes); fout.close(); } catch
 		 * (Exception e) { e.printStackTrace(); }
 		 */
-		File file = new File("/data/data/com.xstudio.taskmanager/files/taskid.txt");
+		File file = new File(
+				"/data/data/com.xstudio.taskmanager/files/taskid.txt");
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -183,12 +189,13 @@ public class AddTaskActivity extends Activity {
 				}
 
 				Intent it = new Intent();
-				it.setClass(AddTaskActivity.this, ListTaskActivity.class);
+				it.setClass(AddTaskActivity.this,
+						ListComplicateTaskActivity.class);
 
 				String sql;
 				if (position == 65535) {
 
-					sql = "insert into task(taskid,content,priority,istop,isdeadline,deadline) values ("
+					sql = "insert into task(taskid,content,priority,istop,isdeadline,deadline, updatedate) values ("
 							+ taskno
 							+ ", '"
 							+ stredit
@@ -199,17 +206,18 @@ public class AddTaskActivity extends Activity {
 							+ "', '"
 							+ isdealine
 							+ "', '"
-							+ time + "')";
+							+ time + "', '" + updatedate + "')";
 					db.execSQL(sql);// 执行SQL语句b
 				} else {
-					ContentValues cv = new ContentValues();
-					cv.put("content", stredit);
-					cv.put("priority", String.valueOf(radioidx));
-					cv.put("istop", String.valueOf(isontop));
-					cv.put("isdeadline", String.valueOf(isdealine));
-					// cv.put("dealine", time);
-					db.update("task", cv, "taskid = ?", new String[] { position
-							+ "" });
+
+					sql = "update task set content = '" + stredit
+							+ "', priority = " + radioidx + ", istop = '"
+							+ String.valueOf(isontop) + "', isdeadline = '"
+							+ isdealine + "', deadline= '" + time
+							+ "', updatedate =  '" + updatedate + "' where taskid = "
+							+ position + "";// 修改的SQL语句
+
+					db.execSQL(sql);// 执行修改
 
 				}
 
@@ -225,7 +233,8 @@ public class AddTaskActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent it = new Intent();
-				it.setClass(AddTaskActivity.this, ListTaskActivity.class);
+				it.setClass(AddTaskActivity.this,
+						ListComplicateTaskActivity.class);
 				startActivity(it);
 				db.close();
 			}

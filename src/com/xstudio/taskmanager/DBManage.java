@@ -44,8 +44,7 @@ public class DBManage {
     DBManage(Context context) {
 
         this.context = context;
-
-    }
+      }
 
  
 
