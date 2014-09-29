@@ -20,7 +20,7 @@ android:layout_alignParentLeft="true"
         android:layout_height="wrap_content"
         android:text="添加任务"
         android:textSize="18sp"
-        android:textColor="#FFFFFF00"
+        android:textColor="#FFFFFFFF"
         android:layout_centerInParent="true" />
     <ImageButton 
 android:id="@+id/confirmimagebtn" 
