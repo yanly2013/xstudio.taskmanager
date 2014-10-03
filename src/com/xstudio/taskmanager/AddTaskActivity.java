@@ -116,7 +116,7 @@ public class AddTaskActivity extends Activity {
 				String strdate[] = date.split("-");
 
 				deadlines.updateDate(Integer.valueOf(strdate[0]).intValue(),
-						Integer.valueOf(strdate[1]).intValue(), Integer
+						Integer.valueOf(strdate[1]).intValue()-1, Integer
 								.valueOf(strdate[2]).intValue());
 
 				String temp = "null";
@@ -184,7 +184,8 @@ public class AddTaskActivity extends Activity {
 				boolean isdealine = hasdeadlinebox.isChecked();
 				String time = "2099-12-12";
 				if (isdealine) {
-					time = deadlines.getYear() + "-" + deadlines.getMonth()
+					int month = deadlines.getMonth()+1;
+					time = deadlines.getYear() + "-" + month
 							+ "-" + deadlines.getDayOfMonth();
 				}
 

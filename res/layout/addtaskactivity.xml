@@ -17,6 +17,8 @@
         android:inputType="textMultiLine"
         android:gravity="left|top"
         android:minLines="4"
+        android:maxLines="4"
+        android:scrollbars="vertical"
         android:hint="请输入你的任务" />
 
    <RadioGroup

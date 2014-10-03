@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.text.ParseException;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ListActivity;
@@ -15,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 //import android.net.ParseException;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +49,8 @@ public class ListComplicateTaskActivity extends ListActivity {
 	private SQLiteDatabase db = null;
 	private String[] strs;
 	private int[] taskid = new int[100];
+	private String[] priority = new String[100];
+	private String[] istop = new String[100];
 	public int selectpos = 0;
 	public static int menuitem = 1;
 
@@ -172,7 +176,9 @@ public class ListComplicateTaskActivity extends ListActivity {
 				+ DBManage.DB_NAME, null);
 
 		Cursor c = db.query("task", null, null, null, null, null,
-				"istop|priority");// 查询并获得游标
+				"istop"+" DESC"+",priority"+" ASC");// 查询并获得游标
+		//String sqlquery = "select * from task order by istop ASC, priority  DESC";
+		//Cursor c = db.rawQuery(sqlquery, selectionArgs)
 		// QueryResult[] queryresult = new QueryResult[c.getCount()];
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String currentdate = sdf.format(new java.util.Date());
@@ -184,60 +190,60 @@ public class ListComplicateTaskActivity extends ListActivity {
 
 				taskid[i] = c.getInt(c.getColumnIndex("taskid"));
 				strs[i] = c.getString(c.getColumnIndex("content"));
-				String priority = c.getString(c.getColumnIndex("priority"));
-				// queryresult[i].istop =
-				// c.getString(c.getColumnIndex("istop"));
-				// queryresult[i].isdeadline =
-				// c.getString(c.getColumnIndex("isdeadline"));
+				priority[i] = c.getString(c.getColumnIndex("priority"));
+				istop[i] = c.getString(c.getColumnIndex("istop"));
 				String date = c.getString(c.getColumnIndex("deadline"));
 				String updatedate = c.getString(c.getColumnIndex("updatedate"));
 
 				long gapdays = getQuot(date, currentdate);
+				String leftdays;
+				if (gapdays < 0) {
+					leftdays = "已经超期";
+				} else if (gapdays > 10) {
+					leftdays = "还早得很";
+				} else {
+					leftdays = " 还差" + Long.toString(gapdays) + "天";
+				}
+
 				Map<String, Object> map = null;
 				if (menuitem == 1) {
 					map = new HashMap<String, Object>();
 					map.put("image", R.drawable.ic_launcher);
-					map.put("days", currentdate);
+					map.put("days", leftdays);
 					map.put("content", strs[i]);
-					map.put("date", date);
+					map.put("date", "更新时间：" + updatedate);
 					list.add(map);
 
 				} else if (menuitem == 2) {
-					if (gapdays>=0 && gapdays <1)
-					{
+					if (gapdays >= 0 && gapdays < 1) {
 						map = new HashMap<String, Object>();
 						map.put("image", R.drawable.ic_launcher);
-						map.put("days", currentdate);
+						map.put("days", leftdays);
 						map.put("content", strs[i]);
-						map.put("date", date);
+						map.put("date", "更新时间：" + updatedate);
 						list.add(map);
 					}
-						
 
 				} else if (menuitem == 3) {
-					if (gapdays>=1 && gapdays <3)
-					{
+					if (gapdays >= 1 && gapdays < 3) {
 						map = new HashMap<String, Object>();
 						map.put("image", R.drawable.ic_launcher);
-						map.put("days", currentdate);
+						map.put("days", leftdays);
 						map.put("content", strs[i]);
-						map.put("date", date);
+						map.put("date", "更新时间：" + updatedate);
 						list.add(map);
 					}
 
 				} else if (menuitem == 4) {
-					if (gapdays < 0)
-					{
+					if (gapdays < 0) {
 						map = new HashMap<String, Object>();
 						map.put("image", R.drawable.ic_launcher);
-						map.put("days", currentdate);
+						map.put("days", leftdays);
 						map.put("content", strs[i]);
-						map.put("date", date);
+						map.put("date", "更新时间：" + updatedate);
 						list.add(map);
 					}
 				}
-
-
 
 				c.moveToNext();// 移动到指定记录
 
@@ -304,12 +310,32 @@ public class ListComplicateTaskActivity extends ListActivity {
 
 				holder = (ViewHolder) convertView.getTag();
 			}
-
-			holder.img.setBackgroundResource((Integer) mData.get(position).get(
-					"image"));
+            
+			//holder.img.setBackgroundResource((Integer) mData.get(position).get(
+			//		"image"));
 			holder.days.setText((String) mData.get(position).get("days"));
 			holder.content.setText((String) mData.get(position).get("content"));
 			holder.date.setText((String) mData.get(position).get("date"));
+			if (istop[position].equals("true")) {
+				holder.img.setImageResource(R.drawable.top);
+			} else if (priority[position].equals("2131230724")) {
+				holder.img.setImageResource(R.drawable.prio1);
+			} else if (priority[position].equals("2131230725")) {
+				holder.img.setImageResource(R.drawable.prio2);
+			} else if (priority[position].equals("2131230726")) {
+				holder.img.setImageResource(R.drawable.prio3);
+			} else if (priority[position].equals("2131230727")) {
+				holder.img.setImageResource(R.drawable.prio4);
+			}
+
+			holder.date.setTextColor(R.drawable.darkgray);
+			if (mData.get(position).get("days").equals("已经超期")) {
+				holder.days.setTextColor(Color.RED);
+			} else if (mData.get(position).get("days").equals("还早得很")) {
+				holder.days.setTextColor(Color.GREEN);
+			} else {
+				holder.days.setTextColor(Color.YELLOW);
+			}
 
 			holder.viewBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -324,11 +350,12 @@ public class ListComplicateTaskActivity extends ListActivity {
 										int arg1) {
 									// TODO 自动生成的方法存根
 									int pos = position;
+									int selectedtaskid = taskid[pos];
 									switch (arg1) {
 
 									case 0:
 										// 删除操作
-										int selectedtaskid = taskid[pos];
+
 										db.delete(
 												"task",
 												"taskid = ?",
@@ -341,7 +368,14 @@ public class ListComplicateTaskActivity extends ListActivity {
 										break;
 
 									case 1:
-										// 删除ALL操作
+										// 置顶操作
+										String sql = "update task set istop = 'true' where taskid = "
+												+ selectedtaskid + "";
+										db.execSQL(sql);// 执行修改
+										db.close();
+										startActivity(new Intent(
+												ListComplicateTaskActivity.this,
+												ListComplicateTaskActivity.class));
 										break;
 									case 2:
 										// 添加操作

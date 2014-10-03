@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:layout_gravity="center_vertical"
     android:orientation="vertical" 
-
+    android:background="#FF07A2FE"
 >
 
     <ImageButton 
 android:id="@+id/backimagebtn" 
 android:layout_width="wrap_content" 
 android:layout_height="wrap_content" 
-android:src="@drawable/ic_launcher" 
+android:src="@drawable/back" 
+android:background="#FF07A2FE"
 android:layout_alignParentLeft="true"
+  android:layout_centerInParent="true"
 /> 
 
     <TextView
@@ -26,8 +28,10 @@ android:layout_alignParentLeft="true"
 android:id="@+id/confirmimagebtn" 
 android:layout_width="wrap_content" 
 android:layout_height="wrap_content" 
-android:src="@drawable/ic_launcher" 
+android:src="@drawable/ok" 
+android:background="#FF07A2FE"
 android:layout_alignParentRight="true"
+  android:layout_centerInParent="true"
 /> 
 
 </RelativeLayout>

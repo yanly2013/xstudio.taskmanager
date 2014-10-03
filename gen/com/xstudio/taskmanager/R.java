@@ -14,26 +14,36 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int bkcolor=0x7f020001;
-        public static final int black=0x7f020004;
-        public static final int darkgray=0x7f020002;
-        public static final int ic_launcher=0x7f020000;
-        public static final int white=0x7f020003;
+        public static final int addtask=0x7f020000;
+        public static final int back=0x7f020001;
+        public static final int bkcolor=0x7f02000b;
+        public static final int black=0x7f02000e;
+        public static final int darkgray=0x7f02000c;
+        public static final int filter=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int menu=0x7f020004;
+        public static final int ok=0x7f020005;
+        public static final int prio1=0x7f020006;
+        public static final int prio2=0x7f020007;
+        public static final int prio3=0x7f020008;
+        public static final int prio4=0x7f020009;
+        public static final int top=0x7f02000a;
+        public static final int white=0x7f02000d;
     }
     public static final class id {
         public static final int LinearLayout01=0x7f08000f;
         public static final int ListView01=0x7f080010;
         public static final int ScrollView=0x7f080000;
-        public static final int addtaskimagebtn=0x7f08000d;
+        public static final int addtaskimagebtn=0x7f08000e;
         public static final int backimagebtn=0x7f08000b;
         public static final int checkBox1=0x7f080008;
         public static final int checkbox2=0x7f080009;
         public static final int confirmimagebtn=0x7f08000c;
-        public static final int content=0x7f080013;
+        public static final int content=0x7f080014;
         public static final int datePicker1=0x7f08000a;
         public static final int daysfromnow=0x7f080012;
         public static final int editText1=0x7f080002;
-        public static final int filterimagebtn=0x7f08000e;
+        public static final int filterimagebtn=0x7f08000d;
         public static final int img=0x7f080011;
         public static final int linear1=0x7f080001;
         public static final int moreImgBtn=0x7f080015;
@@ -42,7 +52,7 @@ public final class R {
         public static final int radio2=0x7f080006;
         public static final int radio3=0x7f080007;
         public static final int radioGroup1=0x7f080003;
-        public static final int updatedate=0x7f080014;
+        public static final int updatedate=0x7f080013;
     }
     public static final class layout {
         public static final int addtaskactivity=0x7f030000;
@@ -51,9 +61,13 @@ public final class R {
         public static final int listview=0x7f030003;
         public static final int listviewpattern=0x7f030004;
         public static final int main=0x7f030005;
+        public static final int startactivity=0x7f030006;
     }
     public static final class raw {
-        public static final int mytask=0x7f040000;
+        public static final int cover=0x7f040000;
+        public static final int coversmall=0x7f040001;
+        public static final int mytask=0x7f040002;
+        public static final int top=0x7f040003;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
