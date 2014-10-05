@@ -26,7 +26,7 @@
   
         </activity>
        <activity android:name=".ListComplicateTaskActivity"
-           android:theme = "@style/test">
+                 android:theme="@style/test">
 
            
            

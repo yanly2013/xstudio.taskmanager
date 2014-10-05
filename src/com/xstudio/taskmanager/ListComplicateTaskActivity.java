@@ -30,14 +30,18 @@ import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class ListComplicateTaskActivity extends ListActivity {
 
@@ -53,6 +57,7 @@ public class ListComplicateTaskActivity extends ListActivity {
 	private String[] istop = new String[100];
 	public int selectpos = 0;
 	public static int menuitem = 1;
+	private int dbrecodernum = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,11 @@ public class ListComplicateTaskActivity extends ListActivity {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				if (dbrecodernum > 10) {
+					Toast.makeText(ListComplicateTaskActivity.this,
+							"你已经有100条记录，请先删除一些", Toast.LENGTH_LONG).show();
+					return;
+				}
 				Intent it = new Intent();
 				it.putExtra("selectpos", 65535);
 				it.setClass(ListComplicateTaskActivity.this,
@@ -175,11 +185,11 @@ public class ListComplicateTaskActivity extends ListActivity {
 		db = SQLiteDatabase.openOrCreateDatabase(DBManage.DB_PATH + "/"
 				+ DBManage.DB_NAME, null);
 
-		Cursor c = db.query("task", null, null, null, null, null,
-				"istop"+" DESC"+",priority"+" ASC");// 查询并获得游标
-		//String sqlquery = "select * from task order by istop ASC, priority  DESC";
-		//Cursor c = db.rawQuery(sqlquery, selectionArgs)
-		// QueryResult[] queryresult = new QueryResult[c.getCount()];
+		Cursor c = db.query("task", null, null, null, null, null, "istop"
+				+ " DESC" + ",priority" + " ASC");// 查询并获得游标
+
+		dbrecodernum = c.getCount();
+
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String currentdate = sdf.format(new java.util.Date());
 
@@ -249,6 +259,10 @@ public class ListComplicateTaskActivity extends ListActivity {
 
 			}
 
+		} else {
+			if (menuitem == 1) {
+
+			}
 		}
 
 		return list;
@@ -310,9 +324,14 @@ public class ListComplicateTaskActivity extends ListActivity {
 
 				holder = (ViewHolder) convertView.getTag();
 			}
-            
-			//holder.img.setBackgroundResource((Integer) mData.get(position).get(
-			//		"image"));
+
+			AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+					LinearLayout.LayoutParams.FILL_PARENT, 180);
+			convertView.setLayoutParams(lp);
+
+			// holder.img.setBackgroundResource((Integer)
+			// mData.get(position).get(
+			// "image"));
 			holder.days.setText((String) mData.get(position).get("days"));
 			holder.content.setText((String) mData.get(position).get("content"));
 			holder.date.setText((String) mData.get(position).get("date"));
@@ -332,9 +351,9 @@ public class ListComplicateTaskActivity extends ListActivity {
 			if (mData.get(position).get("days").equals("已经超期")) {
 				holder.days.setTextColor(Color.RED);
 			} else if (mData.get(position).get("days").equals("还早得很")) {
-				holder.days.setTextColor(Color.GREEN);
+				holder.days.setTextColor(0xFF678901);
 			} else {
-				holder.days.setTextColor(Color.YELLOW);
+				holder.days.setTextColor(0xFFE65A31);
 			}
 
 			holder.viewBtn.setOnClickListener(new View.OnClickListener() {
@@ -351,6 +370,7 @@ public class ListComplicateTaskActivity extends ListActivity {
 									// TODO 自动生成的方法存根
 									int pos = position;
 									int selectedtaskid = taskid[pos];
+									String sql = "null";
 									switch (arg1) {
 
 									case 0:
@@ -369,7 +389,7 @@ public class ListComplicateTaskActivity extends ListActivity {
 
 									case 1:
 										// 置顶操作
-										String sql = "update task set istop = 'true' where taskid = "
+										sql = "update task set istop = 'true' where taskid = "
 												+ selectedtaskid + "";
 										db.execSQL(sql);// 执行修改
 										db.close();
@@ -378,6 +398,17 @@ public class ListComplicateTaskActivity extends ListActivity {
 												ListComplicateTaskActivity.class));
 										break;
 									case 2:
+										// 置顶操作
+										sql = "update task set istop = 'false' where taskid = "
+												+ selectedtaskid + "";
+										db.execSQL(sql);// 执行修改
+										db.close();
+										startActivity(new Intent(
+												ListComplicateTaskActivity.this,
+												ListComplicateTaskActivity.class));
+										break;
+
+									case 3:
 										// 添加操作
 										Intent it = new Intent();
 										it.putExtra("selectpos", taskid[pos]);

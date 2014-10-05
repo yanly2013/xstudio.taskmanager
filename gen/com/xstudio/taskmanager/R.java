@@ -67,7 +67,6 @@ public final class R {
         public static final int cover=0x7f040000;
         public static final int coversmall=0x7f040001;
         public static final int mytask=0x7f040002;
-        public static final int top=0x7f040003;
     }
     public static final class string {
         public static final int app_name=0x7f050000;

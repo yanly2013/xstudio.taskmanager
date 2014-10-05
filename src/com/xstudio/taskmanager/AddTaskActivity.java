@@ -61,7 +61,7 @@ public class AddTaskActivity extends Activity {
 
 		Intent intent = this.getIntent();// 得到用于激活它的意图
 		position = intent.getIntExtra("selectpos", 0);
-		Toast.makeText(this, "你选择了" + position + "", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, "你选择了" + position + "", Toast.LENGTH_SHORT).show();
 
 		contenttext = (EditText) findViewById(R.id.editText1);
 		priorityradio = (RadioGroup) findViewById(R.id.radioGroup1);
@@ -70,21 +70,13 @@ public class AddTaskActivity extends Activity {
 		deadlines = (DatePicker) findViewById(R.id.datePicker1);
 		backImgbtn = (ImageButton) findViewById(R.id.backimagebtn);
 		confirmImgbtn = (ImageButton) findViewById(R.id.confirmimagebtn);
-		// int b = getResources().getColor(R.drawable.darkgray);//得到配置文件里的颜色
-		// ontopbox.setTextColor(b);
 
-		// database = new DBManage(this);
-
-		// database.openDatabase();
 		db = SQLiteDatabase.openOrCreateDatabase(DBManage.DB_PATH + "/"
 				+ DBManage.DB_NAME, null);
 
-		// DBManage database = new DBManage(this);// 这段代码放到Activity类中才用this
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");    
 		updatedate=sdf.format(new java.util.Date()); 
 
-		// db = database.getWritableDatabase();
-		// ///////////////////////////
 		if (position != 65535) {
 			setTitle("点击第" + position + "个项目");
 			Cursor c = db.rawQuery("select * from task where taskid = ?",
@@ -124,20 +116,13 @@ public class AddTaskActivity extends Activity {
 
 		}
 
-		// ///////////////////
 
-		/*
-		 * try { String writestr = 1+""; FileOutputStream fout =
-		 * openFileOutput("taskid.txt", MODE_PRIVATE); byte[] bytes =
-		 * writestr.getBytes(); fout.write(bytes); fout.close(); } catch
-		 * (Exception e) { e.printStackTrace(); }
-		 */
 		File file = new File(
 				"/data/data/com.xstudio.taskmanager/files/taskid.txt");
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
-				String writestr = 150 + "";
+				String writestr = 1 + "";
 				FileOutputStream fout = openFileOutput("taskid.txt",
 						MODE_PRIVATE);
 				byte[] bytes = writestr.getBytes();
@@ -195,7 +180,6 @@ public class AddTaskActivity extends Activity {
 
 				String sql;
 				if (position == 65535) {
-
 					sql = "insert into task(taskid,content,priority,istop,isdeadline,deadline, updatedate) values ("
 							+ taskno
 							+ ", '"
@@ -222,8 +206,8 @@ public class AddTaskActivity extends Activity {
 
 				}
 
-				Toast.makeText(AddTaskActivity.this, "响应成功", Toast.LENGTH_SHORT)
-						.show();
+				//Toast.makeText(AddTaskActivity.this, "响应成功", Toast.LENGTH_SHORT)
+				//		.show();
 				db.close();
 				startActivity(it);
 			}
@@ -248,10 +232,8 @@ public class AddTaskActivity extends Activity {
 							boolean isChecked) {
 						// TODO Auto-generated method stub
 						if (isChecked == false) {
-							setTitle("置灰");
 							deadlines.setEnabled(false);
 						} else {
-							setTitle("不置灰");
 							deadlines.setEnabled(true);
 						}
 					}

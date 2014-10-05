@@ -8,5 +8,6 @@
 <style name="test" parent="android:Theme">
      <item name="android:windowTitleSize">50dp</item>
      <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
+     <item name="android:background">#FFEEEEEE</item>
 </style>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Taskmanager</string>
+    <string name="app_name">轻松备忘录</string>
     <string name="hello">Hello World, AddTaskActivity!</string>
     <drawable name="bkcolor">#00ffffff</drawable>
     <drawable name="darkgray">#808080FF</drawable>
@@ -11,6 +11,7 @@
     <array name="ItemArray">
          <item>删除</item>
          <item>置顶</item>
+         <item>取消置顶</item>
          <item>修改</item>
      </array>
 

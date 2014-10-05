@@ -9,7 +9,8 @@
           android:layout_height="20px"   
           android:id="@+id/ListView01"
           android:background="#FFEEEEEE" 
-android:dividerHeight="0.5dip"
+android:dividerHeight="10px"
+android:divider = "@drawable/black"
           />  
 </LinearLayout>  
 
