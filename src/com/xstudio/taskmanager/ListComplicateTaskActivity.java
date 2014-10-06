@@ -182,28 +182,26 @@ public class ListComplicateTaskActivity extends ListActivity {
 		database.openDatabase();
 		database.closeDatabase();
 
-		db = SQLiteDatabase.openOrCreateDatabase(DBManage.DB_PATH + "/"
-				+ DBManage.DB_NAME, null);
-
-		Cursor c = db.query("task", null, null, null, null, null, "istop"
-				+ " DESC" + ",priority" + " ASC");// 查询并获得游标
-
-		dbrecodernum = c.getCount();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String currentdate = sdf.format(new java.util.Date());
+		
+		db = SQLiteDatabase.openOrCreateDatabase(DBManage.DB_PATH + "/"
+				+ DBManage.DB_NAME, null);	
+		Cursor c = db.query("task", null, null, null, null, null, "istop"
+					+ " DESC" + ",priority" + " ASC");// 查询并获得游标
 
+		String date = "null";
+		String updatedate = "null";
 		strs = new String[c.getCount()];
+		int j = 0;
 		if (c.moveToFirst()) {// 判断游标是否为空
 
 			for (int i = 0; i < c.getCount(); i++) {
 
-				taskid[i] = c.getInt(c.getColumnIndex("taskid"));
-				strs[i] = c.getString(c.getColumnIndex("content"));
-				priority[i] = c.getString(c.getColumnIndex("priority"));
-				istop[i] = c.getString(c.getColumnIndex("istop"));
-				String date = c.getString(c.getColumnIndex("deadline"));
-				String updatedate = c.getString(c.getColumnIndex("updatedate"));
+
+				date = c.getString(c.getColumnIndex("deadline"));
+				updatedate = c.getString(c.getColumnIndex("updatedate"));
 
 				long gapdays = getQuot(date, currentdate);
 				String leftdays;
@@ -217,41 +215,64 @@ public class ListComplicateTaskActivity extends ListActivity {
 
 				Map<String, Object> map = null;
 				if (menuitem == 1) {
+					taskid[j] = c.getInt(c.getColumnIndex("taskid"));
+					strs[j] = c.getString(c.getColumnIndex("content"));
+					priority[j] = c.getString(c.getColumnIndex("priority"));
+					istop[j] = c.getString(c.getColumnIndex("istop"));
+
 					map = new HashMap<String, Object>();
 					map.put("image", R.drawable.ic_launcher);
 					map.put("days", leftdays);
-					map.put("content", strs[i]);
+					map.put("content", strs[j]);
 					map.put("date", "更新时间：" + updatedate);
 					list.add(map);
+					j++;
 
 				} else if (menuitem == 2) {
 					if (gapdays >= 0 && gapdays < 1) {
+						taskid[j] = c.getInt(c.getColumnIndex("taskid"));
+						strs[j] = c.getString(c.getColumnIndex("content"));
+						priority[j] = c.getString(c.getColumnIndex("priority"));
+						istop[j] = c.getString(c.getColumnIndex("istop"));
+
 						map = new HashMap<String, Object>();
 						map.put("image", R.drawable.ic_launcher);
 						map.put("days", leftdays);
-						map.put("content", strs[i]);
+						map.put("content", strs[j]);
 						map.put("date", "更新时间：" + updatedate);
 						list.add(map);
+						j++;
 					}
 
 				} else if (menuitem == 3) {
 					if (gapdays >= 1 && gapdays < 3) {
+						taskid[j] = c.getInt(c.getColumnIndex("taskid"));
+						strs[j] = c.getString(c.getColumnIndex("content"));
+						priority[j] = c.getString(c.getColumnIndex("priority"));
+						istop[j] = c.getString(c.getColumnIndex("istop"));
 						map = new HashMap<String, Object>();
 						map.put("image", R.drawable.ic_launcher);
 						map.put("days", leftdays);
-						map.put("content", strs[i]);
+						map.put("content", strs[j]);
 						map.put("date", "更新时间：" + updatedate);
 						list.add(map);
+						j++;
 					}
 
 				} else if (menuitem == 4) {
 					if (gapdays < 0) {
+						taskid[j] = c.getInt(c.getColumnIndex("taskid"));
+						strs[j] = c.getString(c.getColumnIndex("content"));
+						priority[j] = c.getString(c.getColumnIndex("priority"));
+						istop[j] = c.getString(c.getColumnIndex("istop"));
+						
 						map = new HashMap<String, Object>();
 						map.put("image", R.drawable.ic_launcher);
 						map.put("days", leftdays);
-						map.put("content", strs[i]);
+						map.put("content", strs[j]);
 						map.put("date", "更新时间：" + updatedate);
 						list.add(map);
+						j++;
 					}
 				}
 
@@ -259,11 +280,7 @@ public class ListComplicateTaskActivity extends ListActivity {
 
 			}
 
-		} else {
-			if (menuitem == 1) {
-
-			}
-		}
+		} 
 
 		return list;
 	}
@@ -329,9 +346,6 @@ public class ListComplicateTaskActivity extends ListActivity {
 					LinearLayout.LayoutParams.FILL_PARENT, 180);
 			convertView.setLayoutParams(lp);
 
-			// holder.img.setBackgroundResource((Integer)
-			// mData.get(position).get(
-			// "image"));
 			holder.days.setText((String) mData.get(position).get("days"));
 			holder.content.setText((String) mData.get(position).get("content"));
 			holder.date.setText((String) mData.get(position).get("date"));

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ParseException;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -49,7 +52,6 @@ public class AddTaskActivity extends Activity {
 	String editquery;
 	private String updatedate;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,7 +63,8 @@ public class AddTaskActivity extends Activity {
 
 		Intent intent = this.getIntent();// 得到用于激活它的意图
 		position = intent.getIntExtra("selectpos", 0);
-		//Toast.makeText(this, "你选择了" + position + "", Toast.LENGTH_SHORT).show();
+		// Toast.makeText(this, "你选择了" + position + "",
+		// Toast.LENGTH_SHORT).show();
 
 		contenttext = (EditText) findViewById(R.id.editText1);
 		priorityradio = (RadioGroup) findViewById(R.id.radioGroup1);
@@ -74,8 +77,8 @@ public class AddTaskActivity extends Activity {
 		db = SQLiteDatabase.openOrCreateDatabase(DBManage.DB_PATH + "/"
 				+ DBManage.DB_NAME, null);
 
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");    
-		updatedate=sdf.format(new java.util.Date()); 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		updatedate = sdf.format(new java.util.Date());
 
 		if (position != 65535) {
 			setTitle("点击第" + position + "个项目");
@@ -108,14 +111,13 @@ public class AddTaskActivity extends Activity {
 				String strdate[] = date.split("-");
 
 				deadlines.updateDate(Integer.valueOf(strdate[0]).intValue(),
-						Integer.valueOf(strdate[1]).intValue()-1, Integer
+						Integer.valueOf(strdate[1]).intValue() - 1, Integer
 								.valueOf(strdate[2]).intValue());
 
 				String temp = "null";
 			}
 
 		}
-
 
 		File file = new File(
 				"/data/data/com.xstudio.taskmanager/files/taskid.txt");
@@ -169,9 +171,11 @@ public class AddTaskActivity extends Activity {
 				boolean isdealine = hasdeadlinebox.isChecked();
 				String time = "2099-12-12";
 				if (isdealine) {
-					int month = deadlines.getMonth()+1;
-					time = deadlines.getYear() + "-" + month
-							+ "-" + deadlines.getDayOfMonth();
+					int month = deadlines.getMonth() + 1;
+
+					time = deadlines.getYear() + "-" + month + "-"
+							+ deadlines.getDayOfMonth();
+
 				}
 
 				Intent it = new Intent();
@@ -199,15 +203,16 @@ public class AddTaskActivity extends Activity {
 							+ "', priority = " + radioidx + ", istop = '"
 							+ String.valueOf(isontop) + "', isdeadline = '"
 							+ isdealine + "', deadline= '" + time
-							+ "', updatedate =  '" + updatedate + "' where taskid = "
-							+ position + "";// 修改的SQL语句
+							+ "', updatedate =  '" + updatedate
+							+ "' where taskid = " + position + "";// 修改的SQL语句
 
 					db.execSQL(sql);// 执行修改
 
 				}
 
-				//Toast.makeText(AddTaskActivity.this, "响应成功", Toast.LENGTH_SHORT)
-				//		.show();
+				// Toast.makeText(AddTaskActivity.this, "响应成功",
+				// Toast.LENGTH_SHORT)
+				// .show();
 				db.close();
 				startActivity(it);
 			}
