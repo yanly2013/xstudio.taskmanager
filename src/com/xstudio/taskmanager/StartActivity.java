@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.view.Window;
 
 public class StartActivity extends Activity {
-	private final int SPLASH_DISPLAY_LENGHT = 3000; //—”≥Ÿ»˝√Î    
+	private final int SPLASH_DISPLAY_LENGHT = 2000; //—”≥Ÿ»˝√Î    
     
  @Override   
  public void onCreate(Bundle savedInstanceState) {   

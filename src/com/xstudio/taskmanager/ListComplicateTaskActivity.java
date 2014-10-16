@@ -21,6 +21,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,12 +59,12 @@ public class ListComplicateTaskActivity extends ListActivity {
 	public int selectpos = 0;
 	public static int menuitem = 1;
 	private int dbrecodernum = 0;
-
+	private long mkeyTime = 0;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-
+		ExitApplication.getInstance().addActivity(this);
 		// mListView = getListView();
 
 		mData = getData();
@@ -100,6 +101,22 @@ public class ListComplicateTaskActivity extends ListActivity {
 		});
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+	        if((System.currentTimeMillis()-mkeyTime) > 2000){  
+	            Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();                                
+	            mkeyTime = System.currentTimeMillis();   
+	        } else {
+	            //finish();
+	            ExitApplication.getInstance().exit();
+	            //System.exit(0);
+	        }
+	        return true;   
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+		 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 

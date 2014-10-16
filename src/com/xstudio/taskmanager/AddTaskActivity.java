@@ -60,7 +60,7 @@ public class AddTaskActivity extends Activity {
 		setContentView(R.layout.addtaskactivity);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.addtasktitlebar); // titlebar为自己标题栏的布局
-
+		ExitApplication.getInstance().addActivity(this);
 		Intent intent = this.getIntent();// 得到用于激活它的意图
 		position = intent.getIntExtra("selectpos", 0);
 		// Toast.makeText(this, "你选择了" + position + "",
@@ -81,7 +81,7 @@ public class AddTaskActivity extends Activity {
 		updatedate = sdf.format(new java.util.Date());
 
 		if (position != 65535) {
-			setTitle("点击第" + position + "个项目");
+			//setTitle("点击第" + position + "个项目");
 			Cursor c = db.rawQuery("select * from task where taskid = ?",
 					new String[] { position + "" });
 			if (c.moveToFirst()) {
@@ -102,8 +102,10 @@ public class AddTaskActivity extends Activity {
 				String isdealine = c.getString(c.getColumnIndex("isdeadline"));
 				if (isdealine.equals("true")) {
 					hasdeadlinebox.setChecked(true);
+					deadlines.setEnabled(true);
 				} else {
 					hasdeadlinebox.setChecked(false);
+					deadlines.setEnabled(false);
 				}
 
 				String date = c.getString(c.getColumnIndex("deadline"));
@@ -114,7 +116,6 @@ public class AddTaskActivity extends Activity {
 						Integer.valueOf(strdate[1]).intValue() - 1, Integer
 								.valueOf(strdate[2]).intValue());
 
-				String temp = "null";
 			}
 
 		}
@@ -169,7 +170,7 @@ public class AddTaskActivity extends Activity {
 				radioidx = priorityradio.getCheckedRadioButtonId();
 				boolean isontop = ontopbox.isChecked();
 				boolean isdealine = hasdeadlinebox.isChecked();
-				String time = "2099-12-12";
+				String time = "2016-12-12";
 				if (isdealine) {
 					int month = deadlines.getMonth() + 1;
 
